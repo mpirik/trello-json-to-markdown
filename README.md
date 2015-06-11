@@ -1,5 +1,5 @@
 # trello-json-to-markdown
-[trello-json-to-markdown](https://github.com/mpirik/trello-json-to-markdown) is a script that converts the JSON exports
+[trello-json-to-markdown](https://github.com/mpirik/trello-json-to-markdown) is a [Node.js](https://nodejs.org/)script that converts the JSON exports
 of your [Trello](https://trello.com/) boards into Markdown files for easy viewing of the cards you have created and the
 details for each card, including the history of all of the actions for each card.
 # Installation
