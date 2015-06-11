@@ -153,7 +153,7 @@ process.argv.forEach(function (val, index, array) {
             var date = (new Date(action.date)).toUTCString();
             var content = action.data.text;
             cardMd += h5 + tab + tab + commentUserFullName + ' - *' + date + '*' + br;
-            cardMd += '```bash' + br;
+            cardMd += '```' + br;
             cardMd += content + br;
             cardMd += '```' + br;
           });
