@@ -34,7 +34,7 @@ The markdown files for your boards and cards will be dumped to their respective 
 |   |   \-- board2-2.md
 ```
 # Example
-We'll run this against the JSON file for the
+We'll run this against the [JSON file](example/trello-json-to-markdown.json) for the
 [trello-json-to-markdown](https://trello.com/b/1Mt3BuUL/trello-json-to-markdown) board  </br>
 Export the board to JSON and save the file as `trello-json-to-markdown.json` where you have the `trello-json-to-markdown.js`
 file
@@ -44,7 +44,7 @@ $ node trello-json-to-markdown.js trello-json-to-markdown.json
 You should now have the `trello-json-to-markdown` folder that contains the `trello-json-to-markdown.md` file and the
 `trello-json-to-markdown-cards` folder  </br>
 Navigate into the `trello-json-to-markdown` folder and then open the `trello-json-to-markdown.md` file  </br>
-> You should see something similar to [this image](example-screenshots/board-markdown-screenshot.png)
+> You should see something similar to [this file](example/trello-json-to-markdown/trello-json-to-markdown.md)
 
 Now open the `trello-json-to-markdown-cards` folder and then open the `trello-json-to-markdown-3.md` file  </br>
->You should see something similar to [this image](example-screenshots/card-markdown-screenshot.png)
+>You should see something similar to [this file](example/trello-json-to-markdown/trello-json-to-markdown-cards/trello-json-to-markdown-3.md)
