@@ -52,10 +52,13 @@ process.argv.forEach(function (val, index, array) {
         var id = card.idShort;
         var cardFullId = cardPrefix + id;
         var cardFilePath = cardDirectory + cardFullId + '.md';
+        var name = card.name;
 
         //Add the card to the table of contents and link the card to the card's markdown file
         tableOfContents += h3 + '[Card #' + id + '](' + cardFilePath + ')' + br;
-        tableOfContents += tab + '[' + cardFullId + '](' + cardFilePath + ')' + br;
+        tableOfContents += '[' + cardFullId + '](' + cardFilePath + ')' + br;
+        tableOfContents += h6 + name + br;
+        tableOfContents += '*Last Modified: ' + (new Date(card.dateLastActivity)).toUTCString() + '*' + br;
         tableOfContents += hr + br;
 
         //----------------CARD MARKDOWN----------------
@@ -64,7 +67,6 @@ process.argv.forEach(function (val, index, array) {
         var cardMd = h1 + ' #' + id + br;
 
         var shortUrl = card.shortUrl;
-        var name = card.name;
         var memberIds = card.idMembers;
         var cardLabels = card.labels;
         var description = card.desc;
@@ -264,7 +266,7 @@ process.argv.forEach(function (val, index, array) {
                   info = 'Unknown action';
               }
               cardMd += h5 + tab + tab + userFullName + ' - *' + date + '*' + br;
-              cardMd += '`' + br;
+              cardMd += tab + tab + '`' + br;
               cardMd += info + br;
               if (!attachmentAdded) {
                 cardMd += '`' + br;
