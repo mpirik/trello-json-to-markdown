@@ -1,0 +1,9 @@
+{
+  "name": "trell-json-to-markdown",
+  "author": "javery",
+  "version": "0.0.1",
+  "devDependencies": {
+    "node-trello": "^1.1.2"
+  },
+  "repository": "https://github.com/mpirik/trello-json-to-markdown.git"
+}
