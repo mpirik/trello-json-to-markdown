@@ -42,7 +42,7 @@ module.exports.boards = ['boardID1', 'boardID2'];
 ```
 
 Replace the key and token placeholders with your key and token. You'll also need to add the IDs of the boards you would
-like to generate reports for into to the `boards` array.  
+like to generate reports for into to the `boards` array.
 To get the IDs of the boards you would like, simply execute:
 ```
 $ node get-boards.js
@@ -83,8 +83,8 @@ The markdown files for your boards and cards will be dumped to their respective 
 |   |   \-- board2-2.md
 ```
 # Example
-We'll run this against the [JSON file](example/trello-json-to-markdown.json) for the
-[trello-json-to-markdown](https://trello.com/b/1Mt3BuUL/trello-json-to-markdown) board for the past 30 days.  </br>
+We'll run this against the [trello-json-to-markdown](https://trello.com/b/1Mt3BuUL/trello-json-to-markdown) board for
+the past 30 days.  </br>
 ```
 $ node trello-json-to-markdown.js 30
 ```
