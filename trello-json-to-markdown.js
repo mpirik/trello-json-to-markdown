@@ -28,13 +28,17 @@ if(numDays <= deltaDays) {
   deltaDays = 1;
 }
 
+//If we don't need to go through MAX_DAYS_PER_INTERVAL days for each interval,
+//we'll just limit it to the number of days that was passed in
 if(numDays < MAX_DAYS_PER_INTERVAL) {
   daysPerInterval = numDays;
 }
 
+//So we can limit the amount of cards we retrieve, we'll need to store the earliest date
 var endDate = new Date();
 endDate.setDate(endDate.getDate() - numDays);
 
+//Make sure numDays is a number >= 1
 if(numDays && !isNaN(numDays) && numDays > 0) {
   console.log('Grabbing actions. This may take a while...');
   var actionsInterval = setInterval(getActions, WAIT_TIME);
@@ -58,8 +62,8 @@ function getActions() {
 
     while (currentDay < daysPerInterval) {
 
-      var beforeISOString = beforeDate.toISOString(); //'2014-12-11T00:00:00.000Z'
-      var sinceISOString = sinceDate.toISOString(); //'2014-08-25T00:00:00.000Z'
+      var beforeISOString = beforeDate.toISOString();
+      var sinceISOString = sinceDate.toISOString();
       var parameters = '?limit=1000&before=' + beforeISOString + '&since=' + sinceISOString;
 
       trello.get('/1/boards/' + boardId + '/actions' + parameters, function (error, actions) {
@@ -77,7 +81,7 @@ function getActions() {
 
       if(i === config.boards.length - 1) {
         dateAdjustment += deltaDays; //Adjust the dates for the next interval
-        dayCountDown -= deltaDays;
+        dayCountDown -= deltaDays;  //Update the count down for the days for the next interval
       }
 
       sinceDate.setDate(sinceDate.getDate() - deltaDays);
@@ -86,10 +90,14 @@ function getActions() {
     }
 
     if(i === config.boards.length - 1 && dayCountDown < MAX_DAYS_PER_INTERVAL) {
+      //If we no longer need to go through MAX_DAYS_PER_INTERVAL days for each interval,
+      //just go through the remaining days
       daysPerInterval = dayCountDown;
     }
   }
 
+  //Once we processed the last of the actions, clear the interval so it does not continue,
+  //and then create the markdown files
   if (dayCountDown <= 0) {
     clearInterval(actionsInterval);
     setTimeout(createMarkdowns, WAIT_TIME);
