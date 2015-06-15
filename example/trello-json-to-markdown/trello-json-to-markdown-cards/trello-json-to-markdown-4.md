@@ -13,6 +13,6 @@
 ####&nbsp;&nbsp;&nbsp;&nbsp;History
 #####&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jason Avery - *Thu, 11 Jun 2015 20:36:54 GMT*
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`
-Created the card
+Added the card to Future
 `
 ######URL: [https://trello.com/c/1dsWP1rE](https://trello.com/c/1dsWP1rE)

@@ -31,6 +31,6 @@ Moved the card from the Doing list to the Done list
 `
 #####&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jason Avery - *Thu, 11 Jun 2015 19:13:55 GMT*
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`
-Created the card
+Added the card to Doing
 `
 ######URL: [https://trello.com/c/vGCupMnK](https://trello.com/c/vGCupMnK)

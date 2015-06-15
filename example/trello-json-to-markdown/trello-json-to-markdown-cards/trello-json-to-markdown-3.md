@@ -42,8 +42,6 @@ Added Jason Avery to the card
 `
 #####&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jason Avery - *Thu, 11 Jun 2015 19:32:53 GMT*
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`
-Created the card
+Added the card to Doing
 `
 ######URL: [https://trello.com/c/reQvop8F](https://trello.com/c/reQvop8F)
-######Attachments:
-* [Screen Shot 2015-06-11 at 2.43.38 PM.png](https://trello-attachments.s3.amazonaws.com/5579e2652aaef9c774e6bb80/764x649/6dcd68726b07838602dd8d64f6bd5404/Screen_Shot_2015-06-11_at_2.43.38_PM.png)

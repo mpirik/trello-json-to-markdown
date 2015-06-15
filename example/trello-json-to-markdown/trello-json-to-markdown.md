@@ -1,4 +1,24 @@
 #[trello-json-to-markdown](https://trello.com/b/1Mt3BuUL)
+###[Card #7](trello-json-to-markdown-cards/trello-json-to-markdown-7.md)
+[trello-json-to-markdown-7](trello-json-to-markdown-cards/trello-json-to-markdown-7.md)
+######Add script to fetch boards, listing their full IDs and names
+*Last Modified: Mon, 15 Jun 2015 19:28:10 GMT*
+___
+###[Card #6](trello-json-to-markdown-cards/trello-json-to-markdown-6.md)
+[trello-json-to-markdown-6](trello-json-to-markdown-cards/trello-json-to-markdown-6.md)
+######Find a way to retrieve more actions
+*Last Modified: Mon, 15 Jun 2015 18:35:33 GMT*
+___
+###[Card #5](trello-json-to-markdown-cards/trello-json-to-markdown-5.md)
+[trello-json-to-markdown-5](trello-json-to-markdown-cards/trello-json-to-markdown-5.md)
+######Convert to use the Trello API
+*Last Modified: Fri, 12 Jun 2015 15:51:25 GMT*
+___
+###[Card #2](trello-json-to-markdown-cards/trello-json-to-markdown-2.md)
+[trello-json-to-markdown-2](trello-json-to-markdown-cards/trello-json-to-markdown-2.md)
+######Add checklists to card markdowns
+*Last Modified: Fri, 12 Jun 2015 15:50:02 GMT*
+___
 ###[Card #1](trello-json-to-markdown-cards/trello-json-to-markdown-1.md)
 [trello-json-to-markdown-1](trello-json-to-markdown-cards/trello-json-to-markdown-1.md)
 ######Add card name to list items
@@ -13,9 +33,4 @@ ___
 [trello-json-to-markdown-4](trello-json-to-markdown-cards/trello-json-to-markdown-4.md)
 ######Future card
 *Last Modified: Thu, 11 Jun 2015 20:36:54 GMT*
-___
-###[Card #2](trello-json-to-markdown-cards/trello-json-to-markdown-2.md)
-[trello-json-to-markdown-2](trello-json-to-markdown-cards/trello-json-to-markdown-2.md)
-######Add checklists to card markdowns
-*Last Modified: Thu, 11 Jun 2015 20:28:44 GMT*
 ___
