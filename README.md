@@ -24,7 +24,7 @@ Once you have your developer key, then modify this URL accordingly:
 https://trello.com/1/authorize?key=substitutewithyourdeveloperkey&scope=read&name=My+Application&expiration=never&response_type=token
 ```
 1. Replace `substitutewithyourdeveloperkey` with your developer key.
-2. Replace `My+Application` with your application's name.
+2. Replace `My+Application` with your application's name. This application is `trello-json-to-markdown`.
 3. Enter the modified URL into your browser, and then click Allow.
 4. The generated token is now your application's token that will never expire.
 
