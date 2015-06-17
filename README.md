@@ -1,15 +1,15 @@
 # trello-json-to-markdown
 [trello-json-to-markdown](https://github.com/mpirik/trello-json-to-markdown) is a [Node.js](https://nodejs.org/) script
-that generates reports for your [Trello](https://trello.com/) boards within a range of days as Markdown files for easy
+that generates reports for your [Trello](https://trello.com/) boards within a range of days as GFM Markdown files for easy
 viewing of the cards you have created and the details for each card, including the history of all of the actions for
 each card.
 # Installation
 Clone the git repository via [https](https://github.com/mpirik/trello-json-to-markdown.git):
-```
+```bash
 $ git clone https://github.com/mpirik/trello-json-to-markdown.git
 ```
 And then install the dependencies:
-```
+```bash
 $ npm install
 ```
 
@@ -44,7 +44,7 @@ module.exports.boards = ['boardID1', 'boardID2'];
 Replace the key and token placeholders with your key and token. You'll also need to add the IDs of the boards you would
 like to generate reports for into to the `boards` array.
 To get the IDs of the boards you would like, simply execute:
-```
+```bash
 $ node get-boards.js
 ```
 This will list all of the boards the developer key is associated with in this format:
@@ -54,12 +54,12 @@ This will list all of the boards the developer key is associated with in this fo
 
 ### Execution
 Once you have the configuration set up, execute the following command:
-```.
+```bash
 $ node trello-json-to-markdown.js <number_of_days_to_search>
 ```
 Replace `<number_of_days_to_search>` with the amount of days you would like to search for. For example, to generate
 reports for the last 30 days from right now, execute:
-```
+```bash
 $ node trello-json-to-markdown.js 30
 ```
 The markdown files for your boards and cards will be dumped to their respective folders and files. For example:
@@ -85,7 +85,7 @@ The markdown files for your boards and cards will be dumped to their respective 
 # Example
 We'll run this against the [trello-json-to-markdown](https://trello.com/b/1Mt3BuUL/trello-json-to-markdown) board for
 the past 30 days.  </br>
-```
+```bash
 $ node trello-json-to-markdown.js 30
 ```
 You should now have the `trello-json-to-markdown` folder that contains the `trello-json-to-markdown.md` file and the
@@ -94,4 +94,4 @@ Navigate into the `trello-json-to-markdown` folder and then open the `trello-jso
 > You should see something similar to [this file](example/trello-json-to-markdown/trello-json-to-markdown.md)
 
 Now open the `trello-json-to-markdown-cards` folder and then open the `trello-json-to-markdown-3.md` file  </br>
->You should see something similar to [this file](example/trello-json-to-markdown/trello-json-to-markdown-cards/trello-json-to-markdown-3.md)
+> You should see something similar to [this file](example/trello-json-to-markdown/trello-json-to-markdown-cards/trello-json-to-markdown-3.md)
