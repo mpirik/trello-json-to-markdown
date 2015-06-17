@@ -159,6 +159,7 @@ function createMarkdowns() {
         var cards = boardJSON.cards;
         var members = boardJSON.members;
         var labels = boardJSON.labels;
+        var checkLists = boardJSON.checklists;
 
         var boardDirectory = boardName + '/';
         var cardDirectory = boardName + '-cards/';
@@ -276,6 +277,35 @@ function createMarkdowns() {
           }
 
           //----------------END LABELS----------------
+
+          //----------------CHECKLISTS----------------
+
+          if(checkLists.length > 0) {
+            var checkListsCard = checkLists.filter(function (checkList) {
+              return checkList.idCard === card.id;
+            });
+
+            if(checkListsCard.length > 0) {
+              cardMd += br + h4 + tab + 'Checklists' + br;
+              checkListsCard.forEach(function (list) {
+                cardMd += h5 + tab + tab + list.name + br;
+                list.checkItems.forEach(function (item) {
+                  cardMd += '- [';
+
+                  if (item.state === 'complete') {
+                    cardMd += 'x] ' + item.name;
+                  }
+                  else {
+                    cardMd += ' ] ' + item.name;
+                  }
+
+                  cardMd += br;
+                });
+              });
+            }
+          }
+
+          //----------------END CHECKLISTS----------------
 
           //----------------COMMENTS----------------
 
@@ -401,7 +431,7 @@ function createMarkdowns() {
                     }
                     break;
                   case 'updateCheckItemStateOnCard':
-                    info = 'Update a check item state on the card';
+                    info = 'Marked ' + action.data.checkItem.name + ' on ' + action.data.checklist.name + ' ' + action.data.checkItem.state;
                     break;
                   default:
                     info = 'Unknown action';
