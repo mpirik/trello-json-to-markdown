@@ -11,6 +11,10 @@
 ####&nbsp;&nbsp;&nbsp;&nbsp;Comments
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[no comments]
 ####&nbsp;&nbsp;&nbsp;&nbsp;History
+#####&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jason Avery - *Wed, 17 Jun 2015 19:14:15 GMT*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`
+Closed the card
+`
 #####&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jason Avery - *Thu, 11 Jun 2015 20:36:54 GMT*
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`
 Added the card to Future

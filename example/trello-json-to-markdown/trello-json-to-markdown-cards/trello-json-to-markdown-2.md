@@ -11,6 +11,10 @@
 ####&nbsp;&nbsp;&nbsp;&nbsp;Comments
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[no comments]
 ####&nbsp;&nbsp;&nbsp;&nbsp;History
+#####&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jason Avery - *Wed, 17 Jun 2015 19:07:06 GMT*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`
+Moved the card from the Now list to the Doing list
+`
 #####&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jason Avery - *Fri, 12 Jun 2015 15:50:02 GMT*
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`
 Moved the card from the Doing list to the Now list
