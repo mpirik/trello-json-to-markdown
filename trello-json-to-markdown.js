@@ -34,7 +34,7 @@ if(numDays < MAX_DAYS_PER_INTERVAL) {
   daysPerInterval = numDays;
 }
 
-//So we can limit the amount of cards we retrieve, we'll need to store the earliest date
+//So we can limit the amount of cards we retrieve, we'll need to store the end date
 var endDate = new Date();
 endDate.setDate(endDate.getDate() - numDays);
 
@@ -67,14 +67,24 @@ function getActions() {
       var parameters = '?limit=1000&before=' + beforeISOString + '&since=' + sinceISOString;
 
       trello.get('/1/boards/' + boardId + '/actions' + parameters, function (error, actions) {
-        if (actions && actions.length > 0) {
-          if (actionsJSON) {
-            actions.forEach(function (action) {
-              actionsJSON[actionsJSON.length] = action;
-            });
-          }
-          else {
-            actionsJSON = actions;
+        if(error) {
+          console.log(error);
+        }
+        else {
+          if (actions && actions.length > 0) {
+            if (actionsJSON) {
+              try {
+                actions.forEach(function (action) {
+                  actionsJSON[actionsJSON.length] = action;
+                });
+              }
+              catch (exception) {
+                console.log(exception.message);
+              }
+            }
+            else {
+              actionsJSON = actions;
+            }
           }
         }
       });
@@ -415,16 +425,4 @@ function createMarkdowns() {
       }
     });
   });
-}
-
-/**
- * This will check if the given string ends with the
- * specified suffix
- *
- * @param str String to check its suffix
- * @param suffix Suffix to check against
- * @returns {boolean} True if str ends with suffix, false otherwise
- */
-function endsWith(str, suffix) {
-  return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
