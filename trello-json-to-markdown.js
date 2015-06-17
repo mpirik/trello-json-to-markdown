@@ -66,28 +66,7 @@ function getActions() {
       var sinceISOString = sinceDate.toISOString();
       var parameters = '?limit=1000&before=' + beforeISOString + '&since=' + sinceISOString;
 
-      trello.get('/1/boards/' + boardId + '/actions' + parameters, function (error, actions) {
-        if(error) {
-          console.log(error);
-        }
-        else {
-          if (actions && actions.length > 0) {
-            if (actionsJSON) {
-              try {
-                actions.forEach(function (action) {
-                  actionsJSON[actionsJSON.length] = action;
-                });
-              }
-              catch (exception) {
-                console.log(exception.message);
-              }
-            }
-            else {
-              actionsJSON = actions;
-            }
-          }
-        }
-      });
+      trelloGet(boardId, parameters, true);
 
       if(i === config.boards.length - 1) {
         dateAdjustment += deltaDays; //Adjust the dates for the next interval
@@ -112,6 +91,52 @@ function getActions() {
     clearInterval(actionsInterval);
     setTimeout(createMarkdowns, WAIT_TIME);
   }
+}
+
+function trelloGet(boardId, parameters, ableToRetry) {
+  trello.get('/1/boards/' + boardId + '/actions' + parameters, function (error, actions) {
+    if(error) {
+      retry(boardId, parameters, ableToRetry);
+    }
+    else {
+      if (actions && actions.length > 0) {
+        if (actionsJSON) {
+          try {
+            actions.forEach(function (action) {
+              actionsJSON[actionsJSON.length] = action;
+            });
+          }
+          catch (exception) {
+            retry(boardId, parameters, ableToRetry);
+          }
+        }
+        else {
+          actionsJSON = actions;
+        }
+      }
+    }
+  });
+}
+
+function retry(boardId, parameters, ableToRetry) {
+  //This should grab the ISO dates out of the parameters
+  var dateRegex = /\d+[\d\W]+T[\d\W]+Z/g;
+  var before = (new Date(dateRegex.exec(parameters)[0])).toUTCString();
+  var since = (new Date(dateRegex.exec(parameters)[0])).toUTCString();
+  var msg = '';
+
+  if(ableToRetry) {
+    msg = 'An error occurred causing the actions request between ' + before + ' and ' + since + ' to fail.\n';
+    msg += 'Attempting to request the data again now...\n';
+    //We'll only retry failed requests one more time
+    trelloGet(boardId, parameters, false);
+  }
+  else {
+    msg = 'The actions request between ' + before + ' and ' + since + ' failed again.\n';
+    msg += 'The data will not be requested again.\n';
+  }
+
+  console.log(msg);
 }
 
 function createMarkdowns() {
