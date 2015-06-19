@@ -12,6 +12,10 @@ And then install the dependencies:
 ```bash
 $ npm install
 ```
+Install Grunt CLI:
+```bash
+$ npm install -g grunt-cli
+```
 
 # Usage
 First you'll need to obtain your [Trello](https://trello.com/) developer key and application token.
@@ -82,6 +86,15 @@ The markdown files for your boards and cards will be dumped to their respective 
 |   |   +-- board2-1.md
 |   |   \-- board2-2.md
 ```
+
+### ESLint
+[ESLint](http://eslint.org/) is being used as a linting utility for this project. Before each commit,
+[ESLint](http://eslint.org/) will check for any rule violations. To execute [ESLint](http://eslint.org/) without
+committing, execute the following:
+```bash
+$ grunt eslint
+```
+
 # Example
 We'll run this against the [trello-json-to-markdown](https://trello.com/b/1Mt3BuUL/trello-json-to-markdown) board for
 the past 30 days.  </br>
