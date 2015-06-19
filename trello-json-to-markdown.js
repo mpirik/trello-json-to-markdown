@@ -24,13 +24,13 @@ var WAIT_TIME = 10000; //Wait 10 seconds between each interval so we're not atta
 var numDays = process.argv[2];
 var dayCountDown = numDays;
 
-if(numDays <= deltaDays) {
+if (numDays <= deltaDays) {
   deltaDays = 1;
 }
 
 //If we don't need to go through MAX_DAYS_PER_INTERVAL days for each interval,
 //we'll just limit it to the number of days that was passed in
-if(numDays < MAX_DAYS_PER_INTERVAL) {
+if (numDays < MAX_DAYS_PER_INTERVAL) {
   daysPerInterval = numDays;
 }
 
@@ -39,18 +39,17 @@ var endDate = new Date();
 endDate.setDate(endDate.getDate() - numDays);
 
 //Make sure numDays is a number >= 1
-if(numDays && !isNaN(numDays) && numDays > 0) {
+if (numDays && !isNaN(numDays) && numDays > 0) {
   console.log('Grabbing actions. This may take a while...');
   var actionsInterval = setInterval(getActions, WAIT_TIME);
-}
-else {
+} else {
   console.log('Number of days to search must be a positive number greater than 0.');
   console.log('Usage: node trello-json-to-markdown.js \<number_of_days_to_search\>');
 }
 
 function getActions() {
 
-  for(var i = 0; i < config.boards.length; i++) {
+  for (var i = 0; i < config.boards.length; i++) {
     var boardId = config.boards[i];
     var currentDay = 0;
 
@@ -68,7 +67,7 @@ function getActions() {
 
       trelloGet(boardId, parameters, true);
 
-      if(i === config.boards.length - 1) {
+      if (i === config.boards.length - 1) {
         dateAdjustment += deltaDays; //Adjust the dates for the next interval
         dayCountDown -= deltaDays;  //Update the count down for the days for the next interval
       }
@@ -78,7 +77,7 @@ function getActions() {
       currentDay += deltaDays;
     }
 
-    if(i === config.boards.length - 1 && dayCountDown < MAX_DAYS_PER_INTERVAL) {
+    if (i === config.boards.length - 1 && dayCountDown < MAX_DAYS_PER_INTERVAL) {
       //If we no longer need to go through MAX_DAYS_PER_INTERVAL days for each interval,
       //just go through the remaining days
       daysPerInterval = dayCountDown;
@@ -95,22 +94,19 @@ function getActions() {
 
 function trelloGet(boardId, parameters, ableToRetry) {
   trello.get('/1/boards/' + boardId + '/actions' + parameters, function (error, actions) {
-    if(error) {
+    if (error) {
       retry(boardId, parameters, ableToRetry);
-    }
-    else {
+    } else {
       if (actions && actions.length > 0) {
         if (actionsJSON) {
           try {
             actions.forEach(function (action) {
               actionsJSON[actionsJSON.length] = action;
             });
-          }
-          catch (exception) {
+          } catch (exception) {
             retry(boardId, parameters, ableToRetry);
           }
-        }
-        else {
+        } else {
           actionsJSON = actions;
         }
       }
@@ -125,13 +121,12 @@ function retry(boardId, parameters, ableToRetry) {
   var since = (new Date(dateRegex.exec(parameters)[0])).toUTCString();
   var msg = '';
 
-  if(ableToRetry) {
+  if (ableToRetry) {
     msg = 'An error occurred causing the actions request between ' + before + ' and ' + since + ' to fail.\n';
     msg += 'Attempting to request the data again now...\n';
     //We'll only retry failed requests one more time
     trelloGet(boardId, parameters, false);
-  }
-  else {
+  } else {
     msg = 'The actions request between ' + before + ' and ' + since + ' failed again.\n';
     msg += 'The data will not be requested again.\n';
   }
@@ -142,7 +137,7 @@ function retry(boardId, parameters, ableToRetry) {
 function createMarkdowns() {
   console.log('Finished grabbing actions. Found ' + actionsJSON.length + ' actions.');
 
-  actionsJSON.sort(function(action1, action2) {
+  actionsJSON.sort(function (action1, action2) {
     return Date.parse(action2.date) - Date.parse(action1.date);
   });
 
@@ -158,7 +153,6 @@ function createMarkdowns() {
         var boardShortUrl = boardJSON.shortUrl;
         var cards = boardJSON.cards;
         var members = boardJSON.members;
-        var labels = boardJSON.labels;
         var checkLists = boardJSON.checklists;
 
         var boardDirectory = boardName + '/';
@@ -190,7 +184,7 @@ function createMarkdowns() {
           return Date.parse(card2.dateLastActivity) - Date.parse(card1.dateLastActivity);
         });
 
-        cards.forEach(function (card, index) {
+        cards.forEach(function (card) {
           var idShort = card.idShort;
           var cardFullId = cardPrefix + idShort;
           var cardFilePath = cardDirectory + cardFullId + '.md';
@@ -221,8 +215,7 @@ function createMarkdowns() {
           cardMd += h4 + tab + 'Name' + br;
           if (name.length <= 0) {
             cardMd += tab + tab + '[no name]' + br;
-          }
-          else {
+          } else {
             cardMd += tab + tab + name + br;
           }
 
@@ -243,8 +236,7 @@ function createMarkdowns() {
           cardMd += h4 + tab + 'Members' + br;
           if (memberIds.length <= 0) {
             cardMd += tab + tab + '[no members]' + br;
-          }
-          else {
+          } else {
             memberIds.forEach(function (id) {
               var member = members.filter(function (memberObject) {
                 if (memberObject.id === id) {
@@ -262,8 +254,7 @@ function createMarkdowns() {
           cardMd += br + h4 + tab + 'Labels' + br;
           if (cardLabels.length <= 0) {
             cardMd += tab + tab + '[no labels]' + br;
-          }
-          else {
+          } else {
             cardLabels.forEach(function (label) {
               var labelName = label.name;
               if (labelName.length <= 0) {
@@ -280,12 +271,12 @@ function createMarkdowns() {
 
           //----------------CHECKLISTS----------------
 
-          if(checkLists.length > 0) {
+          if (checkLists.length > 0) {
             var checkListsCard = checkLists.filter(function (checkList) {
               return checkList.idCard === card.id;
             });
 
-            if(checkListsCard.length > 0) {
+            if (checkListsCard.length > 0) {
               cardMd += br + h4 + tab + 'Checklists' + br;
               checkListsCard.forEach(function (list) {
                 cardMd += h5 + tab + tab + list.name + br;
@@ -294,8 +285,7 @@ function createMarkdowns() {
 
                   if (item.state === 'complete') {
                     cardMd += 'x] ' + item.name;
-                  }
-                  else {
+                  } else {
                     cardMd += ' ] ' + item.name;
                   }
 
@@ -317,8 +307,7 @@ function createMarkdowns() {
           });
           if (commentActions.length <= 0) {
             cardMd += tab + tab + '[no comments]' + br;
-          }
-          else {
+          } else {
             commentActions.forEach(function (action) {
               var commentUserFullName = action.memberCreator.fullName;
               var date = (new Date(action.date)).toUTCString();
@@ -407,25 +396,19 @@ function createMarkdowns() {
                   case 'updateCard':
                     if (action.data.old.idList != null) {
                       info = 'Moved the card from the ' + action.data.listBefore.name + ' list to the ' + action.data.listAfter.name + ' list';
-                    }
-                    else if (action.data.old.pos != null) {
+                    } else if (action.data.old.pos != null) {
                       info = 'Moved the card within the ' + action.data.list.name + ' list';
-                    }
-                    else if (action.data.old.name != null) {
+                    } else if (action.data.old.name != null) {
                       info = 'Changed the name of the card to "' + action.data.card.name + '"';
-                    }
-                    else if (action.data.old.desc != null) {
+                    } else if (action.data.old.desc != null) {
                       info = 'Updated the description';
-                    }
-                    else if (action.data.old.closed != null) {
-                      if (action.data.old.closed == true) {
+                    } else if (action.data.old.closed != null) {
+                      if (action.data.old.closed === true) {
                         info = 'Open the card';
-                      }
-                      else {
+                      } else {
                         info = 'Closed the card';
                       }
-                    }
-                    else {
+                    } else {
                       info = 'Unknown update card action';
                       //console.log(action);
                     }
