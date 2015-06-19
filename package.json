@@ -8,5 +8,8 @@
     "grunt-eslint": "^14.0.0",
     "node-trello": "^1.1.2"
   },
+  "scripts": {
+    "postinstall": "mkdir -p .git/hooks && cp -f git-hooks/pre-commit .git/hooks/ && chmod 755 .git/hooks/pre-commit"
+  },
   "repository": "https://github.com/mpirik/trello-json-to-markdown.git"
 }
