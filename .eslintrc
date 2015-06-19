@@ -1,0 +1,34 @@
+{
+  // Override default eslint settings for the project
+  "env": {
+    "node": true,
+    "mocha": true
+  },
+  "globals": ["module"],
+  // Note:
+  //  0 = ignore rule
+  //  1 = warn
+  //  2 = error
+  "rules": {
+    "no-unused-expressions": 0,
+    "no-console": 0,
+    "no-else-return": 2,
+    "no-extra-semi": 2,
+    "no-loop-func": 0,
+    "no-shadow": 0,
+    "no-undef": 0,
+    "no-underscore-dangle": 0,
+    "no-use-before-define": [2, "nofunc"],
+    "brace-style": [2, "1tbs"],
+    "comma-dangle": "never",
+    "handle-callback-err": [2, "^.*err" ],
+    "new-cap": 0,
+    "space-after-keywords": 2,
+    "space-before-blocks": 2,
+    "space-before-function-paren": {"anonymous": "always", "named": "never"},
+    "space-in-brackets": [2, "never"],
+    "space-in-parens": 0,
+    "strict": 0,
+    "quotes": 0
+  }
+}

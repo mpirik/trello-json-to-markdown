@@ -1,0 +1,9 @@
+#!/bin/sh
+#
+# Pre-commit hooks
+
+# Add node to the path since Tower runs in a different environment
+export PATH=/usr/local/bin:$PATH
+
+# ESLint stuff before committing
+grunt eslint
