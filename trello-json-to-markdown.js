@@ -47,6 +47,12 @@ if (numDays && !isNaN(numDays) && numDays > 0) {
   console.log('Usage: node trello-json-to-markdown.js \<number_of_days_to_search\>');
 }
 
+/**
+ * This will retrieve all of the actions within a short period
+ * of time up to a maximum of daysPerInterval days, and store
+ * those actions into the actionsJSON array
+ *
+ */
 function getActions() {
 
   for (var i = 0; i < config.boards.length; i++) {
@@ -92,6 +98,15 @@ function getActions() {
   }
 }
 
+/**
+ * This will execute a GET request to the Trello API with the
+ * specified information
+ *
+ * @param boardId ID of the board to request actions from
+ * @param parameters The parameters to pass to the GET request
+ * @param ableToRetry If this request were to fail, retry the
+ * request if ableToRetry is true, else do not retry the request
+ */
 function trelloGet(boardId, parameters, ableToRetry) {
   trello.get('/1/boards/' + boardId + '/actions' + parameters, function (error, actions) {
     if (error) {
@@ -114,6 +129,14 @@ function trelloGet(boardId, parameters, ableToRetry) {
   });
 }
 
+/**
+ * This will attempt to retry a failed request if ableToRetry is true
+ *
+ * @param boardId ID of the board to request actions from
+ * @param parameters The parameters to pass to the GET request
+ * @param ableToRetry If this request were to fail, retry the
+ * request if ableToRetry is true, else do not retry the request
+ */
 function retry(boardId, parameters, ableToRetry) {
   //This should grab the ISO dates out of the parameters
   var dateRegex = /\d+[\d\W]+T[\d\W]+Z/g;
@@ -134,6 +157,11 @@ function retry(boardId, parameters, ableToRetry) {
   console.log(msg);
 }
 
+/**
+ * This will generate the markdown files for each board and
+ * cards within each board
+ *
+ */
 function createMarkdowns() {
   console.log('Finished grabbing actions. Found ' + actionsJSON.length + ' actions.');
 
