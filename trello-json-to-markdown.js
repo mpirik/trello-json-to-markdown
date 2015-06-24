@@ -13,9 +13,8 @@ var h6 = '######';
 var br = '\n';
 var tab = '&nbsp;&nbsp;&nbsp;&nbsp;';
 
-var WAIT_TIME = 15000; //Wait 15 seconds between each interval so we're not attacking Trello's API
-var requestCount = 0;
-var MAX_REQUEST_COUNT = 85;
+var currentWaitTime = 0;
+var DELTA_WAIT_TIME = 150; //Wait 15 seconds between each interval so we're not attacking Trello's API
 
 var numDays = process.argv[2];
 
@@ -26,7 +25,6 @@ endDate.setDate(endDate.getDate() - numDays);
 //Make sure numDays is a number >= 1
 if (numDays && !isNaN(numDays) && numDays > 0) {
   createMarkdowns()
-  //var actionsInterval = setInterval(getActions, WAIT_TIME);
 } else {
   console.log('Number of days to search must be a positive number greater than 0.');
   console.log('Usage: node trello-json-to-markdown.js \<number_of_days_to_search\>');
@@ -46,7 +44,6 @@ function createMarkdowns() {
       }
       var boardName = boardJSON.name;
       if (boardName) {
-        console.log('Generating Markdowns for ' + boardName + '...');
 
         var boardShortUrl = boardJSON.shortUrl;
         var cards = boardJSON.cards;
@@ -94,25 +91,15 @@ function createMarkdowns() {
           return Date.parse(card.dateLastActivity) >= endDate;
         });
 
-          cards.forEach(function (card) {
-          /*setTimeout(function () {
+        cards.forEach(function (card) {
+          setTimeout(function () {
             createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory);
-          }, WAIT_TIME);*/
-          createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory);
-          requestCount++;
-          if(requestCount >= MAX_REQUEST_COUNT) {
-            requestCount = 0;
-            var before = (new Date()).getTime();
-            var after = (new Date()).getTime();
-            while(after - before <= WAIT_TIME) {
-              after = (new Date()).getTime();
-            }
-          }
+          }, currentWaitTime);
+          currentWaitTime += DELTA_WAIT_TIME;
         });
 
         //Write the table of contents to its markdown file
         fs.writeFileSync(tableOfContentsFile, tableOfContents);
-        console.log('Finished generating Markdowns for ' + boardName + '.');
       }
     });
   });
@@ -120,11 +107,9 @@ function createMarkdowns() {
 
 function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, retry) {
   var id = card.id;
-  //&checklists=true&checklist_fields=all
   trello.get('/1/card/' + id + '?actions=all&actions_limit=1000&members=true&member_fields=all&checklists=all&checklist_fields=all', function (error, cardJSON) {
     if (error) {
-      //console.log(error);
-      if(retry) {
+      if (retry) {
         console.log('An error has occurred when gathering actions for ' + cardPrefix + '-' + card.idShort);
         console.log('Retrying to get the actions now...');
         createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, false);
@@ -132,7 +117,6 @@ function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, ret
 
       }
     } else {
-
       var actions = cardJSON.actions;
       var members = cardJSON.members;
       var checkLists = cardJSON.checklists;
@@ -142,13 +126,14 @@ function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, ret
       var cardFilePath = cardDirectory + cardFullId + '.md';
       var name = card.name;
 
+      console.log('Successful request for ' + cardPrefix + idShort);
+
       //----------------CARD MARKDOWN----------------
 
       //Set the short id of the card as the title of the markdown file
       var cardMd = h1 + ' #' + idShort + br;
 
       var shortUrl = card.shortUrl;
-      var memberIds = card.idMembers;
       var cardLabels = card.labels;
       var description = card.desc;
 
@@ -178,19 +163,14 @@ function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, ret
 
       //----------------MEMBERS----------------
 
-      /*cardMd += h4 + tab + 'Members' + br;
-      if (memberIds.length <= 0) {
+      cardMd += h4 + tab + 'Members' + br;
+      if (members.length <= 0) {
         cardMd += tab + tab + '[no members]' + br;
       } else {
-        memberIds.forEach(function (id) {
-          var member = members.filter(function (memberObject) {
-            if (memberObject.id === id) {
-              return memberObject;
-            }
-          });
-          cardMd += '* ' + member[0].fullName + br;
+        members.forEach(function (member) {
+          cardMd += '* ' + member.fullName + br;
         });
-      }*/
+      }
 
       //----------------END MEMBERS----------------
 
@@ -217,11 +197,6 @@ function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, ret
       //----------------CHECKLISTS----------------
 
       if (checkLists.length > 0) {
-        // var checkListsCard = checkLists.filter(function (checkList) {
-        //   return checkList.idCard === id;
-        // });
-
-        //if (checkListsCard.length > 0) {
         cardMd += br + h4 + tab + 'Checklists' + br;
         checkLists.forEach(function (list) {
           cardMd += h5 + tab + tab + list.name + br;
@@ -237,7 +212,6 @@ function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, ret
             cardMd += br;
           });
         });
-        //}
       }
 
       //----------------END CHECKLISTS----------------
@@ -273,7 +247,6 @@ function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, ret
         var type = action.type;
         var attachmentAdded = false;
         if (type.indexOf('Card') > -1) {
-          //if (action.data.card.id === card.id) {
           var userFullName = action.memberCreator.fullName;
           var date = (new Date(action.date)).toUTCString();
           var info = '';
@@ -355,7 +328,6 @@ function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, ret
                 }
               } else {
                 info = 'Unknown update card action';
-                //console.log(action);
               }
               break;
             case 'updateCheckItemStateOnCard':
@@ -371,7 +343,6 @@ function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, ret
             cardMd += '`' + br;
           }
         }
-        //}
       });
 
       //----------------END HISTORY----------------
@@ -401,6 +372,5 @@ function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, ret
       //Write the card's markdown to its markdown file
       fs.writeFileSync(boardDirectory + cardFilePath, cardMd);
     }
-    //console.log(cardJSON);
   });
 }
