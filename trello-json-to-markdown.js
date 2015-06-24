@@ -24,7 +24,7 @@ endDate.setDate(endDate.getDate() - numDays);
 
 //Make sure numDays is a number >= 1
 if (numDays && !isNaN(numDays) && numDays > 0) {
-  createMarkdowns()
+  createMarkdowns();
 } else {
   console.log('Number of days to search must be a positive number greater than 0.');
   console.log('Usage: node trello-json-to-markdown.js \<number_of_days_to_search\>');
@@ -110,11 +110,12 @@ function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, ret
   trello.get('/1/card/' + id + '?actions=all&actions_limit=1000&members=true&member_fields=all&checklists=all&checklist_fields=all', function (error, cardJSON) {
     if (error) {
       if (retry) {
-        console.log('An error has occurred when gathering actions for ' + cardPrefix + '-' + card.idShort);
+        console.log('An error has occurred when gathering actions for ' + cardPrefix + card.idShort);
         console.log('Retrying to get the actions now...');
         createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, false);
       } else {
-
+        console.log('Requesting ' + cardPrefix + card.idShort + ' failed again.');
+        console.log('It will not be requested again.');
       }
     } else {
       var actions = cardJSON.actions;
