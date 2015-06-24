@@ -13,26 +13,11 @@ var h6 = '######';
 var br = '\n';
 var tab = '&nbsp;&nbsp;&nbsp;&nbsp;';
 
-var actionsJSON = null;
-
-var deltaDays = 2;
-var dateAdjustment = 0;
-var MAX_DAYS_PER_INTERVAL = 20;
-var daysPerInterval = MAX_DAYS_PER_INTERVAL;
-var WAIT_TIME = 10000; //Wait 10 seconds between each interval so we're not attacking Trello's API
+var WAIT_TIME = 15000; //Wait 15 seconds between each interval so we're not attacking Trello's API
+var requestCount = 0;
+var MAX_REQUEST_COUNT = 85;
 
 var numDays = process.argv[2];
-var dayCountDown = numDays;
-
-if (numDays <= deltaDays) {
-  deltaDays = 1;
-}
-
-//If we don't need to go through MAX_DAYS_PER_INTERVAL days for each interval,
-//we'll just limit it to the number of days that was passed in
-if (numDays < MAX_DAYS_PER_INTERVAL) {
-  daysPerInterval = numDays;
-}
 
 //So we can limit the amount of cards we retrieve, we'll need to store the end date
 var endDate = new Date();
@@ -40,7 +25,6 @@ endDate.setDate(endDate.getDate() - numDays);
 
 //Make sure numDays is a number >= 1
 if (numDays && !isNaN(numDays) && numDays > 0) {
-  console.log('Grabbing actions. This may take a while...');
   createMarkdowns()
   //var actionsInterval = setInterval(getActions, WAIT_TIME);
 } else {
@@ -49,126 +33,11 @@ if (numDays && !isNaN(numDays) && numDays > 0) {
 }
 
 /**
- * This will retrieve all of the actions within a short period
- * of time up to a maximum of daysPerInterval days, and store
- * those actions into the actionsJSON array
- *
- */
-function getActions() {
-
-  for (var i = 0; i < config.boards.length; i++) {
-    var boardId = config.boards[i];
-    var currentDay = 0;
-
-    var beforeDate = new Date();
-    beforeDate.setDate(beforeDate.getDate() - dateAdjustment);
-    var sinceDate = new Date();
-    sinceDate.setDate(sinceDate.getDate() - dateAdjustment - deltaDays);
-
-
-    while (currentDay < daysPerInterval) {
-
-      var beforeISOString = beforeDate.toISOString();
-      var sinceISOString = sinceDate.toISOString();
-      var parameters = '?limit=1000&before=' + beforeISOString + '&since=' + sinceISOString;
-
-      trelloGet(boardId, parameters, true);
-
-      if (i === config.boards.length - 1) {
-        dateAdjustment += deltaDays; //Adjust the dates for the next interval
-        dayCountDown -= deltaDays;  //Update the count down for the days for the next interval
-      }
-
-      sinceDate.setDate(sinceDate.getDate() - deltaDays);
-      beforeDate.setDate(beforeDate.getDate() - deltaDays);
-      currentDay += deltaDays;
-    }
-
-    if (i === config.boards.length - 1 && dayCountDown < MAX_DAYS_PER_INTERVAL) {
-      //If we no longer need to go through MAX_DAYS_PER_INTERVAL days for each interval,
-      //just go through the remaining days
-      daysPerInterval = dayCountDown;
-    }
-  }
-
-  //Once we processed the last of the actions, clear the interval so it does not continue,
-  //and then create the markdown files
-  if (dayCountDown <= 0) {
-    clearInterval(actionsInterval);
-    setTimeout(createMarkdowns, WAIT_TIME);
-  }
-}
-
-/**
- * This will execute a GET request to the Trello API with the
- * specified information
- *
- * @param boardId ID of the board to request actions from
- * @param parameters The parameters to pass to the GET request
- * @param ableToRetry If this request were to fail, retry the
- * request if ableToRetry is true, else do not retry the request
- */
-function trelloGet(boardId, parameters, ableToRetry) {
-  trello.get('/1/boards/' + boardId + '/actions' + parameters, function (error, actions) {
-    if (error) {
-      retry(boardId, parameters, ableToRetry);
-    } else {
-      if (actions && actions.length > 0) {
-        if (actionsJSON) {
-          try {
-            actions.forEach(function (action) {
-              actionsJSON[actionsJSON.length] = action;
-            });
-          } catch (exception) {
-            retry(boardId, parameters, ableToRetry);
-          }
-        } else {
-          actionsJSON = actions;
-        }
-      }
-    }
-  });
-}
-
-/**
- * This will attempt to retry a failed request if ableToRetry is true
- *
- * @param boardId ID of the board to request actions from
- * @param parameters The parameters to pass to the GET request
- * @param ableToRetry If this request were to fail, retry the
- * request if ableToRetry is true, else do not retry the request
- */
-function retry(boardId, parameters, ableToRetry) {
-  //This should grab the ISO dates out of the parameters
-  var dateRegex = /\d+[\d\W]+T[\d\W]+Z/g;
-  var before = (new Date(dateRegex.exec(parameters)[0])).toUTCString();
-  var since = (new Date(dateRegex.exec(parameters)[0])).toUTCString();
-  var msg = '';
-
-  if (ableToRetry) {
-    msg = 'An error occurred causing the actions request between ' + before + ' and ' + since + ' to fail.\n';
-    msg += 'Attempting to request the data again now...\n';
-    //We'll only retry failed requests one more time
-    trelloGet(boardId, parameters, false);
-  } else {
-    msg = 'The actions request between ' + before + ' and ' + since + ' failed again.\n';
-    msg += 'The data will not be requested again.\n';
-  }
-
-  console.log(msg);
-}
-
-/**
  * This will generate the markdown files for each board and
  * cards within each board
  *
  */
 function createMarkdowns() {
-  //console.log('Finished grabbing actions. Found ' + actionsJSON.length + ' actions.');
-
-  /*actionsJSON.sort(function (action1, action2) {
-   return Date.parse(action2.date) - Date.parse(action1.date);
-   });*/
 
   config.boards.forEach(function (boardId) {
     trello.get('/1/boards/' + boardId + '?cards=all&lists=all&members=all&member_fields=all&checklists=all&fields=all', function (error, boardJSON) {
@@ -225,8 +94,20 @@ function createMarkdowns() {
           return Date.parse(card.dateLastActivity) >= endDate;
         });
 
-        cards.forEach(function (card) {
-          createCardMarkdown(card, boardJSON, cardPrefix, cardDirectory, boardDirectory)
+          cards.forEach(function (card) {
+          /*setTimeout(function () {
+            createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory);
+          }, WAIT_TIME);*/
+          createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory);
+          requestCount++;
+          if(requestCount >= MAX_REQUEST_COUNT) {
+            requestCount = 0;
+            var before = (new Date()).getTime();
+            var after = (new Date()).getTime();
+            while(after - before <= WAIT_TIME) {
+              after = (new Date()).getTime();
+            }
+          }
         });
 
         //Write the table of contents to its markdown file
@@ -237,12 +118,19 @@ function createMarkdowns() {
   });
 }
 
-function createCardMarkdown(card, boardJSON, cardPrefix, cardDirectory, boardDirectory) {
+function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, retry) {
   var id = card.id;
   //&checklists=true&checklist_fields=all
   trello.get('/1/card/' + id + '?actions=all&actions_limit=1000&members=true&member_fields=all&checklists=all&checklist_fields=all', function (error, cardJSON) {
     if (error) {
-      console.log(error);
+      //console.log(error);
+      if(retry) {
+        console.log('An error has occurred when gathering actions for ' + cardPrefix + '-' + card.idShort);
+        console.log('Retrying to get the actions now...');
+        createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, false);
+      } else {
+
+      }
     } else {
 
       var actions = cardJSON.actions;
