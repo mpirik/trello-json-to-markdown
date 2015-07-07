@@ -14,7 +14,7 @@ var br = '\n';
 var tab = '&nbsp;&nbsp;&nbsp;&nbsp;';
 
 var currentWaitTime = 0;
-var DELTA_WAIT_TIME = 150; //Wait 15 seconds between each interval so we're not attacking Trello's API
+var DELTA_WAIT_TIME = 150; //Wait 150 milliseconds between request so we're not attacking Trello's API
 
 var numDays = process.argv[2];
 
@@ -107,7 +107,7 @@ function createMarkdowns() {
 
 function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, retry) {
   var id = card.id;
-  trello.get('/1/card/' + id + '?actions=all&actions_limit=1000&members=true&member_fields=all&checklists=all&checklist_fields=all', function (error, cardJSON) {
+  trello.get('/1/card/' + id + '?actions=all&actions_limit=1000&members=true&member_fields=all&checklists=all&checklist_fields=all&attachments=true', function (error, cardJSON) {
     if (error) {
       if (retry) {
         console.log('An error has occurred when gathering actions for ' + cardPrefix + card.idShort);
@@ -356,7 +356,7 @@ function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, ret
 
       //----------------ATTACHMENTS----------------
 
-      var attachments = card.attachments;
+      var attachments = cardJSON.attachments;
       //Similar to description, if there are attachments,
       //then we'll display them, else we won't show the field
       if (attachments && attachments.length > 0) {
