@@ -334,7 +334,7 @@ function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, ret
                 info = 'Updated the description';
               } else if (action.data.old.closed != null) {
                 if (action.data.old.closed === true) {
-                  info = 'Open the card';
+                  info = 'Opened the card';
                 } else {
                   info = 'Closed the card';
                 }
@@ -373,7 +373,7 @@ function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, ret
       if (attachments && attachments.length > 0) {
         cardMd += h6 + 'Attachments:' + br;
         attachments.forEach(function (attachment) {
-          cardMd += '* [' + attachment.name + '](' + attachment.url + ')';
+          cardMd += '* [' + attachment.name + '](' + attachment.url + ')' + br;
         });
       }
 
