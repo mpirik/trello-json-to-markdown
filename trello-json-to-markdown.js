@@ -93,7 +93,7 @@ function createMarkdowns() {
 
         cards.forEach(function (card) {
           setTimeout(function () {
-            createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory);
+            createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, true);
           }, currentWaitTime);
           currentWaitTime += DELTA_WAIT_TIME;
         });
@@ -261,7 +261,13 @@ function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, ret
               info = 'Added the checklist ' + action.data.checklist.name + ' to the card';
               break;
             case 'addMemberToCard':
-              info = 'Added ' + action.member.fullName + ' to the card';
+              if (action.member) {
+                info = 'Added ' + action.member.fullName + ' to the card';
+              } else {
+                // If there is no member that was added, that means that
+                // the account was deleted
+                info = 'Added [deleted account] to the card';
+              }
               break;
             case 'commentCard':
               info = 'Commented on the card';
@@ -297,7 +303,12 @@ function createCardMarkdown(card, cardPrefix, cardDirectory, boardDirectory, ret
               info = 'Removed a checklist from the card';
               break;
             case 'removeMemberFromCard':
-              info = 'Removed ' + action.member.fullName + ' from the card';
+              if (action.member) {
+                info = 'Removed ' + action.member.fullName + ' from the card';
+              } else {
+                // Same as adding a member
+                info = 'Removed [deleted account] from the card';
+              }
               break;
             //These are never used - Only updateCard is used
             //case 'updateCard:closed':
