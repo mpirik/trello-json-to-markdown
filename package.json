@@ -8,6 +8,7 @@
     "grunt-eslint": "^14.0.0",
     "node-trello": "^1.1.2"
   },
+  "license": "BSD-3-Clause",
   "scripts": {
     "postinstall": "mkdir -p .git/hooks && cp -f git-hooks/pre-commit .git/hooks/ && chmod 755 .git/hooks/pre-commit"
   },
