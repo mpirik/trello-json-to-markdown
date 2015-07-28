@@ -16,6 +16,10 @@
 Looks good!
 ```
 ####&nbsp;&nbsp;&nbsp;&nbsp;History
+#####&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jason Avery - *Tue, 28 Jul 2015 19:27:16 GMT*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`
+Added an attachment to the card:`
+[Screen Shot 2015-07-28 at 2.24.35 PM.png](https://trello-attachments.s3.amazonaws.com/5579e2652aaef9c774e6bb80/879x796/381ec8a5a2eb4362ab0299e9d9119342/Screen_Shot_2015-07-28_at_2.24.35_PM.png)
 #####&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jason Avery - *Thu, 11 Jun 2015 20:38:11 GMT*
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`
 Updated the description
@@ -32,10 +36,6 @@ Moved the card within the Done list
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`
 Moved the card from the Doing list to the Done list
 `
-#####&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jason Avery - *Thu, 11 Jun 2015 19:45:09 GMT*
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`
-Added an attachment to the card:`
-[Screen Shot 2015-06-11 at 2.43.38 PM.png](https://trello-attachments.s3.amazonaws.com/5579e2652aaef9c774e6bb80/764x649/6dcd68726b07838602dd8d64f6bd5404/Screen_Shot_2015-06-11_at_2.43.38_PM.png)
 #####&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jason Avery - *Thu, 11 Jun 2015 19:32:53 GMT*
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`
 Added Jason Avery to the card
@@ -46,4 +46,4 @@ Added the card to Doing
 `
 ######URL: [https://trello.com/c/reQvop8F](https://trello.com/c/reQvop8F)
 ######Attachments:
-* [Screen Shot 2015-06-11 at 2.43.38 PM.png](https://trello-attachments.s3.amazonaws.com/5579e2652aaef9c774e6bb80/764x649/6dcd68726b07838602dd8d64f6bd5404/Screen_Shot_2015-06-11_at_2.43.38_PM.png)
+* [Screen Shot 2015-07-28 at 2.24.35 PM.png](https://trello-attachments.s3.amazonaws.com/5579e2652aaef9c774e6bb80/879x796/381ec8a5a2eb4362ab0299e9d9119342/Screen_Shot_2015-07-28_at_2.24.35_PM.png)
